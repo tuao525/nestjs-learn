@@ -11,36 +11,43 @@ import {
   Query,
   Res,
 } from '@nestjs/common';
+import { CoffesService } from './coffes.service';
+import { Coffe } from './entities/coffes.entity';
 
 @Controller('coffes')
 export class CoffesController {
+  constructor(private readonly CoffesService: CoffesService) {}
   // get请求获取数据
-  @Get('flavors')
-  findAll(@Res() response): string {
-    return 'This actions returns all coffes';
+  @Get()
+  findAll(): Coffe[] {
+    // return 'This actions returns all coffes';
+    return this?.CoffesService?.findAll();
   }
 
   // get请求获取id数据
-  @Get('/getId:id')
-  findOne(@Param('id') id: string): string {
-    return `This actions returns #${id} coffes`;
+  @Get(':id')
+  findOne(@Param('id') id: string): Coffe {
+    // return `This actions returns #${id} coffes`;
+    return this?.CoffesService?.findOne(id);
   }
 
   // post请求
   @Post()
-  getPost(@Body() body) {
-    return body;
+  create(@Body() body) {
+    return this?.CoffesService?.create(body);
   }
 
   // patch更新
   @Patch(':id')
-  update(@Param('id') id: string, @Body() body) {
-    return `This actions update #${id} coffes ，body ${body.name}`;
+  update(@Param('id') id: number, @Body() body) {
+    // return `This actions update #${id} coffes ，body ${body.name}`;
+    return this?.CoffesService?.update(id, body);
   }
   // delete删除
   @Delete(':id')
   delete(@Param('id') id: string) {
-    return `This actions delete #${id} coffes`;
+    // return `This actions delete #${id} coffes`;
+    return this?.CoffesService?.delete(+id);
   }
 
   //  get请求分页
